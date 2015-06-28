@@ -1,7 +1,13 @@
 # TOPPERS/SSP + nRF51822
 ----
 
+## base platform
+
+https://dev.toppers.jp/trac_user/contrib/wiki/armv6_m_gcc
+
 ----
+
+## build
 
 $ mkdir build  
 $ cd build  
