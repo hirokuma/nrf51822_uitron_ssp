@@ -74,6 +74,9 @@ void app_task(intptr_t exinf)
     app_ble_start();
 
     // メインループ
+    // 今のところnRF51サンプルと同じようにぐるぐる回しているが、
+    // これを割込駆動にして、割込によってタスクが起動されるような
+    // 形にするのがよいのだろうか？
     while (1) {
         drv_event_exec();
     }
