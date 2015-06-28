@@ -448,8 +448,8 @@ static void ble_stack_init(void)
          * ble_advdata_name_type_t (ble_advdata.h)
          *
          * BLE_ADVDATA_NO_NAME    : デバイス名無し
-         * BLE_ADVDATA_SHORT_NAME : デバイス名あり «Shortened Local Name»
-         * BLE_ADVDATA_FULL_NAME  : デバイス名あり «Complete Local Name»
+         * BLE_ADVDATA_SHORT_NAME : デバイス名あり ≪Shortened Local Name≫
+         * BLE_ADVDATA_FULL_NAME  : デバイス名あり ≪Complete Local Name≫
          *
          * https://www.bluetooth.org/en-us/specification/assigned-numbers/generic-access-profile
          * https://developer.nordicsemi.com/nRF51_SDK/nRF51_SDK_v7.x.x/doc/7.2.0/s110/html/a01015.html#ga03c5ccf232779001be9786021b1a563b

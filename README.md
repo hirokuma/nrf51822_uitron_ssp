@@ -1,6 +1,8 @@
 # TOPPERS/SSP + nRF51822
 ----
 
+----
+
 $ mkdir build  
 $ cd build  
 $ ../configure -T nrf51822_gcc -t ../app -A app  
