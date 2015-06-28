@@ -30,3 +30,21 @@
 
 # Debug files
 *.dSYM/
+
+#toppers directory/files
+build
+cfg
+doc
+extension
+include
+kernel
+syssvc
+utils
+arch/armv6_m_gcc
+arch/gcc
+target/lpcxpresso_lpc812_gcc
+sample/
+.cproject
+.project
+configure
+MANIFEST

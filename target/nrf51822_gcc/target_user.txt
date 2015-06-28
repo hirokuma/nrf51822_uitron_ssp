@@ -1,0 +1,144 @@
+=====================================================================
+                 LPCXPRESSO-LPC812ターゲット依存部 (ssp-1.3.0対応）
+                               Last Modified: '15/05/22
+=====================================================================
+
+○概要
+
+LPCXPRESSO-LPC812ターゲット依存部は，プロセッサにLPC812(Cortex-M0+)を搭載した，
+LPCXpresso LPC812ボードをサポートしている．
+
+
+○カーネルの使用リソース
+
+カーネルは以下のリソースを使用する．
+
+  ・ROM
+     コードを配置する．
+     使用量は使用するAPIの数に依存する．
+
+  ・RAM
+     データを配置する．
+  	 使用量はオブジェクト数に依存する．
+  
+  ・SysTick
+     カーネル内部のティックの生成に用いる．
+     
+  ・Universal Synchronous Asynchronous Receiver Transmitter(USART)ポート0
+     コンソールの出力に使用．
+
+
+○他のターゲットへの移植
+
+LPCXPRESSO-LPC812ターゲット依存部で使用するシリアルは，LPC812の内蔵機能のみを使用するため，
+LPC800系のCotex-M0+を用いた環境には容易にポーティングが可能である．
+ポーティングに関しては，以下の初期化ルーチンにターゲット毎の初期化を追加すればよい．
+
+  ・target_initialize() : target_config.c
+    ターゲット依存部の初期化（C言語）
+  ・_hardware_init_hook : target_support.S
+    低レベルのターゲット依存の初期化
+    スタートアップモジュールの中で，メモリの初期化の前に呼び出される
+
+
+○デバッグ環境
+
+デバッグ環境としては，LPCXpresso LPC812に搭載されるSWDデバッガおよび
+開発およびデバッグの環境として LPCXpresso IDE の使用を前提とする．
+
+LPCXpresso IDEについては、以下のサイトを参照
+	http://www.lpcware.com/lpcxpresso/home
+
+
+○コンパイラ
+
+GCC で動作確認を行った．GCC は，LPCXpresso IDEに同梱されているものを利用した．
+動作確認に使用したツールのバージョンは以下のとおり．
+	・GCC 4.9.3(LPCXpresso IDE 7.7.2)
+
+GCC については，同等のツールが以下のサイトからも入手することが可能である．
+https://launchpad.net/gcc-arm-embedded/
+
+○割込み優先度
+
+割込み優先度として指定可能な範囲は，-3 ～ -1 である．
+
+○コンソール出力
+
+コンソール出力には，USART0を用いる．LPCXPRESSO-LPC812はRS232Cポートを
+搭載していないため，ユニバーサル基板などを用いて当該ポートをPCに接続する
+必要がある．その際，RS-232Cドライバを介する必要がある点も注意すること．
+USART0の送信/受信ピンはSWMの機能により自由に設定が可能であるが，
+既定ではP0_0(RXD), P0_4(TXD) に設定されている．
+
+通信フォーマットは以下の通りである．
+
+  ・19200bps, Data 8bit, Parity none, Stop 1bit, Flow control none
+
+○アドレスマッピング
+
+　0x00000000 - 0x00003FFF 内蔵FlashROM 16KB
+　　　　　　　　　　　　　　　・vectorセクション
+　　　　　　　　　　　　　　　・textセクション
+　　　　　　　　　　　　　　　・rodataセクション
+　0x10000000 - 0x10000FFF 内蔵RAM 4KB
+　　　　　　　　　　　　　　　・dataセクション
+　　　　　　　　　　　　　　　・bssセクション
+
+○各種設定の変更
+
+幾つかのパラメータは変更可能になっている．設定ファイル毎に設定可能項目
+は次のようになっている．
+
+●Makefile.target の設定項目
+
+・GCC_TARGET
+  GCCの suffix を定義
+
+・TEXT_START_ADDRESS/DATA_START_ADDRESS
+  テキストセクション，データセクションの開始アドレス
+
+・INCLUDES
+  インクルード指定
+
+・COPTS
+  Cコンパイラへのオプション
+
+・LDFLAGS
+  リンカへのオプション
+
+・USE_CMSIS
+  CMSISを利用する場合，trueに設定する．
+  デバイス定義ファイルLPC8xx.h を include してデバイスレジスタ定義を利用することが可能となる．
+  そのためには，インクルードファイルのサーチディレクトリとして LPC8xx.h の存在するファイルのパスを
+  CMSIS_INCLUDE_PATHに指定する (もしくは，LPCXpresso IDE でサーチパスの設定をしても良い)
+
+  また，ライブラリファイル(libCMSIS_CORE_LPC8xx.a)の利用は想定していない．
+  少なくともsystem_LPC8xx.c の SystemInit に相当する処理（クロック設定）については
+  SSPのシステム起動時に実施しており，基本的に呼び出す必要はない．
+  ※ WDTの初期設定はおこなっていないため，必要ならば初期化が必要である．
+
+・USE_MTB
+  LPC800シリーズに搭載されているMTB(Micro Trace Buffer)を利用する場合，trueに設定する
+  その場合，バッファのサイズを MTB_BUF_SIZE に，バイト単位で設定する
+
+●target_config.h の設定項目
+
+・DEFAULT_ISTKSZ
+  デフォルトの非タスクコンテキスト用のスタックサイズ
+
+・SIL_DLY_TIM1/2 (現時点では未検証)
+  微少時間待ちのための定義
+
+●target_syssvc.h の設定項目
+
+・UART_BAUDRATE
+  コンソールに使用するポート（USART0）のボーレート
+
+
+○変更履歴
+・2015/05/21
+  ・ssp-1.3.0対応
+
+ ・2013/06/19
+　　新規作成
