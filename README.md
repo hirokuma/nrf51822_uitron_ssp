@@ -1,4 +1,4 @@
-TOPPERS/SSP + nRF51822
+# TOPPERS/SSP + nRF51822
 ----
 
 $ mkdir build
@@ -10,9 +10,9 @@ $ make
 ----
 
 target_config.h
-''''
-#define DEFAULT_ISTKSZ			(0x1800 / 4)		/* 6KByte */
-''''
+```c
+    #define DEFAULT_ISTKSZ			(0x1800 / 4)		/* 6KByte */
+```
 
 Stack size configuration result:
         Estimated task stack size = 128
@@ -20,7 +20,7 @@ Stack size configuration result:
         Allocated total stack size = 1664(value=1664)
 
 
-   text    data     bss     dec     hex filename
-  33404      36    3216   36656    8f30 ssp.exe
-
+   text |   data |  bss |   dec  |  hex | filename
+-----------------|------|--------|------|------------
+  33404 |     36 | 3216 | 36656  | 8f30 | ssp.exe
 
