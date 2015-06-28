@@ -1,0 +1,5 @@
+E_PACKAGE ssp_nrf51822
+VERSION %date
+
+INCLUDE ../../MANIFEST
+INCLUDE ../../cfg/MANIFEST
