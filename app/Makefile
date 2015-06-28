@@ -159,7 +159,7 @@ APPL_ASMOBJS =
 SDK_PATH=$(SRCDIR)/../..
 PRJ_PATH=$(APPLDIR)
 #source common to all targets
-C_SOURCE_FILES += $(SDK_PATH)/components/toolchain/system_nrf51.c
+#C_SOURCE_FILES += $(SDK_PATH)/components/toolchain/system_nrf51.c
 C_SOURCE_FILES += $(SDK_PATH)/components/drivers_nrf/common/nrf_drv_common.c
 C_SOURCE_FILES += $(SDK_PATH)/components/drivers_nrf/pstorage/pstorage.c
 C_SOURCE_FILES += $(SDK_PATH)/components/libraries/timer/app_timer.c
@@ -204,7 +204,7 @@ INC_PATHS += -I$(PRJ_PATH)/services
 ##########################################
 APPL_COBJS = $(C_OBJECTS)
 INCLUDES += $(INC_PATHS)
-APPL_CFLAGS =
+APPL_CFLAGS = -ggdb3 -O0
 APPL_LIBS =
 ifdef APPLDIR
   INCLUDES := $(INCLUDES) $(foreach dir,$(APPLDIR),-I$(dir))

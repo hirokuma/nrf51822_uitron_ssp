@@ -48,8 +48,8 @@
 static void on_connect(ble_ios_t *p_ios, ble_evt_t *p_ble_evt);
 static void on_disconnect(ble_ios_t *p_ios, ble_evt_t *p_ble_evt);
 static void on_write(ble_ios_t *p_ios, ble_evt_t *p_ble_evt);
-static uint32_t char_add_input(ble_ios_t *p_ios, const ble_ios_init_t *p_ios_init);
-static uint32_t char_add_output(ble_ios_t *p_ios, const ble_ios_init_t *p_ios_init);
+static void char_add_input(ble_ios_t *p_ios, const ble_ios_init_t *p_ios_init);
+static void char_add_output(ble_ios_t *p_ios, const ble_ios_init_t *p_ios_init);
 
 
 /**************************************************************************
@@ -84,11 +84,8 @@ void ble_ios_init(ble_ios_t *p_ios, const ble_ios_init_t *p_ios_init)
     APP_ERROR_CHECK(err_code);
 
     //キャラクタリスティック登録
-    err_code = char_add_input(p_ios, p_ios_init);
-    APP_ERROR_CHECK(err_code);
-
-    err_code = char_add_output(p_ios, p_ios_init);
-    APP_ERROR_CHECK(err_code);
+    char_add_input(p_ios, p_ios_init);
+    char_add_output(p_ios, p_ios_init);
 }
 
 
@@ -206,8 +203,9 @@ static void on_write(ble_ios_t *p_ios, ble_evt_t *p_ble_evt)
  * @param[in/out]   p_ios       サービス構造体
  * @param[in]       p_ios_init  サービス初期化構造体
  */
-static uint32_t char_add_input(ble_ios_t *p_ios, const ble_ios_init_t *p_ios_init)
+static void char_add_input(ble_ios_t *p_ios, const ble_ios_init_t *p_ios_init)
 {
+    uint32_t   err_code;
     ble_gatts_char_md_t char_md;
     ble_uuid_t          char_uuid;
     ble_gatts_attr_md_t attr_md;
@@ -258,10 +256,11 @@ static uint32_t char_add_input(ble_ios_t *p_ios, const ble_ios_init_t *p_ios_ini
 
     ///////////////////////
     // キャラクタリスティックの登録
-    return sd_ble_gatts_characteristic_add(p_ios->service_handle,
+    err_code = sd_ble_gatts_characteristic_add(p_ios->service_handle,
                                                 &char_md,
                                                 &attr_char_value,
                                                 &p_ios->char_handle_in);
+    APP_ERROR_CHECK(err_code);
 }
 
 
@@ -273,8 +272,9 @@ static uint32_t char_add_input(ble_ios_t *p_ios, const ble_ios_init_t *p_ios_ini
  * @param[in/out]   p_ios       サービス構造体
  * @param[in]       p_ios_init  サービス初期化構造体
  */
-static uint32_t char_add_output(ble_ios_t *p_ios, const ble_ios_init_t *p_ios_init)
+static void char_add_output(ble_ios_t *p_ios, const ble_ios_init_t *p_ios_init)
 {
+    uint32_t   err_code;
     ble_gatts_char_md_t char_md;
     ble_gatts_attr_md_t cccd_md;
     ble_uuid_t          char_uuid;
@@ -333,8 +333,9 @@ static uint32_t char_add_output(ble_ios_t *p_ios, const ble_ios_init_t *p_ios_in
 
     ///////////////////////
     // キャラクタリスティックの登録
-    return sd_ble_gatts_characteristic_add(p_ios->service_handle,
+    err_code = sd_ble_gatts_characteristic_add(p_ios->service_handle,
                                                 &char_md,
                                                 &attr_char_value,
                                                 &p_ios->char_handle_out);
+    APP_ERROR_CHECK(err_code);
 }
