@@ -63,8 +63,12 @@
 /*
  *  デフォルトの非タスクコンテキスト用のスタック領域の定義
  *  8byte単位で取得される．
+ * 
+ * nRF51822のRAMは16KB。
+ * SoftDeviceの使用分があるため、アプリ側は以下で使っている。
+ * 		ORIGIN = 0x20002000, LENGTH = 0x2000=8KB
  */
-#define DEFAULT_ISTKSZ			(0x0400 / 4)		/* 1KByte */
+#define DEFAULT_ISTKSZ			(0x1800 / 4)		/* 6KByte */
 
 /*
  *  微少時間待ちのための定義（本来はSILのターゲット依存部）

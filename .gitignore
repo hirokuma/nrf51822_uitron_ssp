@@ -32,6 +32,7 @@
 *.dSYM/
 
 #toppers directory/files
+build
 cfg
 doc
 extension
